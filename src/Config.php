@@ -1,0 +1,49 @@
+<?php
+
+namespace Kyledong\WechatMpAuth;
+
+class Config
+{
+    private const HOST = 'https://open.weixin.qq.com/';
+
+    private $appid;
+    private $secret;
+
+    public function __construct($appid = '', $secret = '')
+    {
+        $this->appid = $appid;
+        $this->secret = $secret;
+    }
+
+    private const URI = [
+        'authorize' => 'connect/oauth2/authorize?appid=%s&redirect_uri=%s&response_type=code&scope=%s&state=STATE#wechat_redirect',
+        'access_token' => 'sns/oauth2/access_token',
+        'userinfo' => 'sns/userinfo'
+    ];
+
+    public static function getHost()
+    {
+        return self::HOST;
+    }
+
+    public static function getUri(string $type)
+    {
+        return self::getHost() . self::URI[$type];
+    }
+
+    public function getAppid()
+    {
+        if (! $this->appid) {
+            $this->appid = getenv('WECHAT_APPID');
+        }
+        return $this->appid;
+    }
+
+    public function getSecret()
+    {
+        if (! $this->secret) {
+            $this->secret = getenv('WECHAT_SECRET');
+        }
+        return $this->secret;
+    }
+}
