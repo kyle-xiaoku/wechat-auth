@@ -35,7 +35,7 @@ $config = new Config('appid','secret');
 // 方式二 在配置文件.env中配置 WECHAT_APPID=appid  WECHAT_SECRET=secret
 
 // 生成授权链接 若是方式一 需传入config对象
-return Wechat::createAuthUrl('redirect_uri','scope',$config);
+return Wechat::createAuthUrl(urlencode('redirect_uri'),'scope',$config);
 
 // 获取access_token 若是方式一 需传入config对象
 return Wechat::getAccessToken('code',$config);
