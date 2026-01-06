@@ -4,7 +4,8 @@ namespace Kyledong\WechatMpAuth;
 
 class Config
 {
-    private const HOST = 'https://open.weixin.qq.com/';
+    private const OPENHOST = 'https://open.weixin.qq.com/';
+    private const APIHOST = 'https://api.weixin.qq.com';
 
     private $appid;
     private $secret;
@@ -21,14 +22,20 @@ class Config
         'userinfo' => 'sns/userinfo'
     ];
 
-    public static function getHost()
+    public static function getHost($type = 'open')
     {
-        return self::HOST;
+        return match ($type) {
+            'open' => self::OPENHOST,
+            'api' => self::APIHOST
+        };
     }
 
     public static function getUri(string $type)
     {
-        return self::getHost() . self::URI[$type];
+        if ($type == 'authorize') {
+            return self::getHost() . self::URI[$type];
+        }
+        return self::getHost('api') . self::URI[$type];
     }
 
     public function getAppid()
